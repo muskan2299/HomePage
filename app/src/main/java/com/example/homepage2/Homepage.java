@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class Homepage extends AppCompatActivity {
@@ -71,8 +73,9 @@ public class Homepage extends AppCompatActivity {
 
         }
         if(id == R.id.logout){
+            FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(Homepage.this,loginPage.class));
-
+            finish();
 
         }
         return super.onOptionsItemSelected(item);

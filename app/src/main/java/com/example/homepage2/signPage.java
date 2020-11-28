@@ -1,5 +1,6 @@
 package com.example.homepage2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,9 +13,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class signPage extends AppCompatActivity {
     Button register;
-    EditText fullName,shopName,address,phoneNo,email,password;
+    EditText fullName,shopName,address,phoneNo;
+    EditText email,password;
+    private FirebaseAuth mAuth;
     TextView textView;
 
     @Override
@@ -30,7 +39,12 @@ public class signPage extends AppCompatActivity {
         password = findViewById(R.id.textLoginPassword);
         textView=findViewById(R.id.textView3);
 
+        mAuth = FirebaseAuth.getInstance();
 
+        if(mAuth.getCurrentUser() != null){
+            startActivity(new Intent(signPage.this,loginPage.class));
+            finish();
+        }
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,25 +54,34 @@ public class signPage extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(mEmail)){
                     email.setError("Email is required");
+                    return;
                 }
 
                 if(TextUtils.isEmpty(mPassword)){
                     password.setError("Password is required");
+                    return;
                 }
                 if(password.length() < 6){
                     password.setError("Password must be more than or equal to 6 character");
+                    return;
                 }
-                else{
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(signPage.this,"Successfully Signin",Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(signPage.this,loginPage.class));
+
+                mAuth.createUserWithEmailAndPassword(mEmail,mPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+
+                                    Toast.makeText(signPage.this,"Successfully Signin",Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(signPage.this,loginPage.class));
+                    }
+                        else{
+                            Toast.makeText(signPage.this,"Error!"+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
-                    },3000);
                 }
-            }
         });
+
+    }
+});
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
