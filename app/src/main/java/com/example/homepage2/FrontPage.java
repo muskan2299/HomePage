@@ -36,5 +36,12 @@ public class FrontPage extends AppCompatActivity {
                 startActivity(new Intent(FrontPage.this,signPage.class));
             }
         });
+        customer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FrontPage.this,signinLoginPage.class));
+            }
+        });
+
     }
 }
