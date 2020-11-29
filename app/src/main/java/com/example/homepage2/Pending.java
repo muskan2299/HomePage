@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,16 +21,25 @@ import java.util.ArrayList;
 public class Pending extends AppCompatActivity {
 
     ListView listView;
+    Button b1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pending);
 
-
-
         listView = findViewById(R.id.listview1);
+        b1 = findViewById(R.id.button3);
         // call this function to add customer name and pass name as string
         Customers("OrderNo");
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(Pending.this, "Successfully Submitted", Toast.LENGTH_SHORT).show();
+                //Runtime.getRuntime().exec(python python.py);
+            }
+        });
 
     }
 
